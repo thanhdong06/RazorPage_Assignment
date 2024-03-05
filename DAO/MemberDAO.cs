@@ -35,15 +35,15 @@ namespace DAO
 
         public StaffMember GetStaffAccount(int accountID)
         {
-            return dBContext.StaffMembers.FirstOrDefault(m => m.MemberId.Equals(accountID));
+            return dBContext.StaffMembers.AsNoTracking().SingleOrDefault(m => m.MemberId.Equals(accountID));
         }
         public StaffMember GetAccountByEmailAndPassword(string email, string password)
         {
-             return  dBContext.StaffMembers.SingleOrDefault(m => m.EmailAddress.Trim().Equals(email) && m.Password.Trim().Equals(password));
+             return  dBContext.StaffMembers.AsNoTracking().SingleOrDefault(m => m.EmailAddress.Trim().Equals(email) && m.Password.Trim().Equals(password));
         }
         public List<StaffMember> GetStaffAccounts()
         {
-            return dBContext.StaffMembers.ToList();
+            return dBContext.StaffMembers.AsNoTracking().ToList();
         }
 
         public void AddStaffAccount(StaffMember account)
@@ -59,16 +59,18 @@ namespace DAO
 
         public void UpdateStaffAccount(StaffMember account)
         {
+            dBContext.ChangeTracker.Clear();
             StaffMember staff = GetStaffAccount(account.MemberId);
             if (staff != null)
             {
+                dBContext.Set<StaffMember>().Attach(account);
                 dBContext.Entry(account).State = EntityState.Modified;
-                dBContext.Update(account);
                 dBContext.SaveChanges();
             }
         }
         public void DeleteStaffAccount(int id)
         {
+            dBContext.ChangeTracker.Clear();
             StaffMember staff = GetStaffAccount(id);
             if (staff != null)
             {

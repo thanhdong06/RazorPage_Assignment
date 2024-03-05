@@ -55,7 +55,6 @@ namespace RazorPage_Assignment.Pages.Accounts
             {              
                     throw;              
             }
-
             return RedirectToPage("./Index");
         }
     }

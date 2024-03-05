@@ -27,7 +27,7 @@ namespace BO
             {
                 optionsBuilder.UseSqlServer(GetConnectionStringsss());
                 optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-
+                optionsBuilder.EnableSensitiveDataLogging();
             }
         }
 
